@@ -13,12 +13,11 @@ import {
 import { Editor } from "@/components/editor/Editor";
 import Header from "@/components/Header";
 import ActiveCollaborators from "@/components/ActiveCollaborators";
+import Loader from "@/components/Loader";
 import { Input } from "@/components/ui/input";
 import { updateDocument } from "@/lib/actions/room.actions";
 
-export default function CollaborativeRoom({ roomId, roomMetadata }: CollaborativeRoomProps) {
-    const currentUserType = "editor";
-
+export default function CollaborativeRoom({ roomId, roomMetadata, users, currentUserType }: CollaborativeRoomProps) {
     const [documentTitle, setDocumentTitle] = useState(roomMetadata.title);
     const [editing, setEditing] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -69,7 +68,7 @@ export default function CollaborativeRoom({ roomId, roomMetadata }: Collaborativ
 
     return (
         <RoomProvider id={roomId}>
-            <ClientSideSuspense fallback={<div>Loading…</div>}>
+            <ClientSideSuspense fallback={<Loader />}>
                 <div className="collaborative-room">
                     <Header>
                         <div ref={containerRef} className="flex w-fit items-center justify-center gap-2">
@@ -117,7 +116,7 @@ export default function CollaborativeRoom({ roomId, roomMetadata }: Collaborativ
                             </SignedIn>
                         </div>
                     </Header>
-                    <Editor />
+                    <Editor roomId={roomId} currentUserType={currentUserType} />
                 </div>
             </ClientSideSuspense>
         </RoomProvider>
