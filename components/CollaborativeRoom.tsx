@@ -10,12 +10,14 @@ import {
     UserButton
 } from '@clerk/nextjs';
 
+import { updateDocument } from "@/lib/actions/room.actions";
+
+import { Input } from "@/components/ui/input";
 import { Editor } from "@/components/editor/Editor";
 import Header from "@/components/Header";
 import ActiveCollaborators from "@/components/ActiveCollaborators";
 import Loader from "@/components/Loader";
-import { Input } from "@/components/ui/input";
-import { updateDocument } from "@/lib/actions/room.actions";
+import ShareModal from "@/components/ShareModal";
 
 export default function CollaborativeRoom({ roomId, roomMetadata, users, currentUserType }: CollaborativeRoomProps) {
     const [documentTitle, setDocumentTitle] = useState(roomMetadata.title);
@@ -108,6 +110,14 @@ export default function CollaborativeRoom({ roomId, roomMetadata, users, current
                         </div>
                         <div className="flex w-full flex-1 justify-end gap-2 sm:gap-3">
                             <ActiveCollaborators />
+
+                            <ShareModal
+                                roomId={roomId}
+                                collaborators={users}
+                                creatorId={roomMetadata.creatorId}
+                                currentUserType={currentUserType}
+                            />
+
                             <SignedOut>
                                 <SignInButton />
                             </SignedOut>
